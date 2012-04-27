@@ -1,0 +1,43 @@
+= V2.1.0
+
+* Added Ruby 1.9.x requirement to README.
+* Upgraded to Rails 3.1.
+* Switched to sqlite3 in-memory database for testing.
+* Replaced the class_inheritable_reader and write_inheritable_attribute methods with the class_attribute method.
+* Removed RubyGems requirement.
+* Added the spec/tmp dir to .gitignore.
+* Added Travis CI support.
+* Applied Gemsmith updates to README.
+* Added STI warning to README.
+
+= v2.0.0
+
+* Upgraded to Ruby 1.9 and converted to Ruby 1.9 syntax.
+* Applied new Gemsmith specs.
+
+= v1.2.0
+
+* Updated the is_commentable method so that the default settings can be customized.
+* Removed the unused namespace placeholder.
+* Updated the RDoc.
+* Moved the default options for the comment object from the instance methods to the class methods.
+* Made the auto_label method a required  before_save callback (originally, it was optional).
+
+= v1.1.0
+
+* Switched to Bundler for building/packing of gem.
+* Updated README to better support Rails 3.0.0.
+* Removed Ruby version requirements.
+* Added graceful Rails support and detection.
+
+= v1.0.0
+
+* Upgraded to Ruby 1.8.7 and Ruby on Rails 3.0.0.
+
+= v0.2.0
+
+* Added soft requirements for Ruby 1.8.6 and Rails 2.3.8.
+
+= v0.1.0
+
+* Initial version.

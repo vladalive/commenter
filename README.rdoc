@@ -1,0 +1,117 @@
+= Overview
+
+{<img src="https://secure.travis-ci.org/bkuhlmann/commenter.png" />}[http://travis-ci.org/bkuhlmann/commenter]
+
+Allows for comments to be easily added to different models.
+
+*WARNING:* This gem does not promote best practices of database integrity due to single table inheritance (STI). The solution is
+to add a table for each type of comment in the system and move away from a single table. This gem will eventually be deleted so
+know the consequences if you choose to go down this route.
+
+= Features
+
+* Provides a polymorphic comment model.
+* Provides the ability to turn any model into a commentable resource.
+* Provides customizable options for default comment behavior.
+
+= Requirements
+
+1. {Ruby 1.9.x}[http://www.ruby-lang.org]
+2. {Ruby on Rails}[http://rubyonrails.org].
+
+= Setup
+
+Type the following from the command line to install:
+
+  gem install commenter
+
+Add the following to your Gemfile:
+
+  gem "commenter"
+
+= Usage
+
+Assuming you have created Post and Comment migrations and models, for example, then you can modify your models as follows:
+
+  class Post < ActiveRecord::Base
+    is_commentable
+  end
+
+  class Comment < ActiveRecord::Base
+    is_comment 
+  end
+
+As an added bonus, each comment's label will default to the parent label prefixed with "RE:". For example:
+
+  Post Label: "My New Post"
+  Comment Label: "RE: My New Post"
+
+Assumptions are made that both post and comment have "label" attributes. Should you not use "label" attributes
+for Post and Comment models, then it is possible to customize. For example:
+
+  class Comment < ActiveRecord::Base
+    is_comment commentable_label: "title", comment_label: "title"
+  end
+
+Now you are using "title" instead "label" columns. To be clear, the "commentable_label" defines the Post model
+setting, while the "comment_label" defines the Comment model setting.
+
+= Migrations
+
+Based on the Post and Comment model examples, mentioned above, the following demonstrates what your migration
+code would look like:
+
+  # Post Migration
+  class CreatePosts < ActiveRecord::Migration
+    def self.up
+      create_table :posts do |t|
+        t.string :slug
+        t.string :label
+        t.text :content
+        t.datetime :published_at
+        t.timestamps
+      end
+      add_index :posts, :slug
+      add_index :posts, :published_at
+    end
+
+    def self.down
+      drop_table :posts
+    end
+  end
+
+  # Comment Migration
+  class CreateComments < ActiveRecord::Migration
+    def self.up
+      create_table :comments do |t|
+        t.integer :commentable_id
+        t.string :commentable_type
+        t.string :label
+        t.text :content
+        t.timestamps
+      end
+      add_index :comments, [:commentable_id, :commentable_type]
+    end
+
+    def self.down
+      drop_table :comments
+    end
+  end
+
+= Contributions
+
+Please log all feedback/issues via {GitHub Issues}[https://github.com/bkuhlmann/commenter/issues]. Thanks.
+
+= Credits
+
+Developed by {Brooke Kuhlmann}[http://www.redalchemist.com] at {Red Alchemist}[http://www.redalchemist.com]
+
+= License
+
+Copyright (c) 2010 {Red Alchemist}[http://www.redalchemist.com].
+Read the LICENSE for details.
+
+= History
+
+Read the CHANGELOG for details.
+
